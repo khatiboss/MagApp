@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WebAPI.Models
 {
-    [Table("tbl_carrelli")]
+    [Table("TblCarrelli")]
     public class Carrello
     {
         [Key]

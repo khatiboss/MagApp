@@ -31,7 +31,8 @@ namespace WebAPI.Models
             return new ApplicationDbContext();
         }
 
-        public IDbSet<Componente> Componenti { get; set; }
-        public IDbSet<Carrello> Carrelli { get; set; }
+        public DbSet<Componente> TblComponenti { get; set; }
+        public DbSet<Carrello> TblCarrelli { get; set; }
+
     }
 }

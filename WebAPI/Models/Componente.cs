@@ -7,7 +7,7 @@ using System.Web;
 
 namespace WebAPI.Models
 {
-    [Table("tbl_componenti")]
+    [Table("TblComponenti")]
     public class Componente
     {
         [Key] 
