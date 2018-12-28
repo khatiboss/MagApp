@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Data.Entity;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -29,5 +30,8 @@ namespace WebAPI.Models
         {
             return new ApplicationDbContext();
         }
+
+        public IDbSet<Componente> Componenti { get; set; }
+        public IDbSet<Carrello> Carrelli { get; set; }
     }
 }
