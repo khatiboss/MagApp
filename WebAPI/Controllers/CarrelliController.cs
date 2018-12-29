@@ -12,16 +12,24 @@ using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Authorize(Users ="Admin")]
+    [Authorize(Users = "Admin")]
     public class CarrelliController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Carrelli
         [AllowAnonymous]
-        public IQueryable<Carrello> GetTblCarrelli()
+        public IHttpActionResult GetTblCarrelli()
         {
-            return db.TblCarrelli;
+            var result = db.TblCarrelli.Select(t => new
+            {
+				t.AnnoArrivo,
+				t.Locazione,
+				t.Matricola,
+				t.AreaStock,
+				t.CarrelloID
+            });
+            return Ok(result.ToList()); 
         }
 
         // GET: api/Carrelli/5
@@ -41,11 +49,12 @@ namespace WebAPI.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutCarrello(int id, Carrello carrello)
         {
+            /*
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            */
             if (id != carrello.CarrelloID)
             {
                 return BadRequest();
@@ -76,11 +85,12 @@ namespace WebAPI.Controllers
         [ResponseType(typeof(Carrello))]
         public IHttpActionResult PostCarrello(Carrello carrello)
         {
+            /*
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            */
             db.TblCarrelli.Add(carrello);
             db.SaveChanges();
 

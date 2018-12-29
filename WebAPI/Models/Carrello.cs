@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,9 +26,11 @@ namespace WebAPI.Models
         [Required, StringLength(100)]
         public string Locazione { get; set; }
 
- 
         public virtual ICollection<Componente> Componenti { get; set; }
 
+        public Carrello()
+        {
+        }
 
         public Carrello(string matricola, int annoArrivo, string areaStock, string locazione)
         {
