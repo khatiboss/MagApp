@@ -41,5 +41,15 @@ namespace WebAPI.Models
             this.Locazione = locazione;
         }
 
+        public Carrello(string matricola, int annoArrivo, string areaStock, string locazione, ICollection<Componente> listaComponenti)
+        {
+
+            this.Matricola = matricola;
+            this.AnnoArrivo = annoArrivo;
+            this.AreaStock = areaStock;
+            this.Locazione = locazione;
+            this.Componenti = listaComponenti;
+        } 
+
     }
 }

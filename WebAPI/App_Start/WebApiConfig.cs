@@ -12,6 +12,8 @@ namespace WebAPI
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors();
+
             // Web API configuration and services
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
@@ -29,6 +31,7 @@ namespace WebAPI
 
             config.Formatters.Remove(new System.Net.Http.Formatting.XmlMediaTypeFormatter());
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
 
 
         }

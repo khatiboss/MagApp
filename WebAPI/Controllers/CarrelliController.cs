@@ -7,42 +7,60 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Authorize(Users = "Admin")]
+    [EnableCors(origins: "http://localhost:50312", headers: "*", methods: "*")]
+    // [Authorize(Users = "Admin")]
     public class CarrelliController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Carrelli
-        [AllowAnonymous]
+
+       // [AllowAnonymous]
         public IHttpActionResult GetTblCarrelli()
         {
             var result = db.TblCarrelli.Select(t => new
             {
-				t.AnnoArrivo,
-				t.Locazione,
-				t.Matricola,
-				t.AreaStock,
-				t.CarrelloID
+                t.AnnoArrivo,
+                t.Locazione,
+                t.Matricola,
+                t.AreaStock,
+                t.CarrelloID
             });
-            return Ok(result.ToList()); 
+            return Ok(result.ToList());
+        }
+        /*
+
+        public IQueryable<Carrello> GetEmployees()
+        {
+            return db.TblCarrelli;
         }
 
+        */
         // GET: api/Carrelli/5
         [ResponseType(typeof(Carrello))]
         public IHttpActionResult GetCarrello(int id)
         {
-            Carrello carrello = db.TblCarrelli.Find(id);
+           
+           Carrello carrello = db.TblCarrelli.Find(id);
+
+            
+      
+              
+
             if (carrello == null)
             {
                 return NotFound();
             }
 
             return Ok(carrello);
+
+
         }
 
         // PUT: api/Carrelli/5

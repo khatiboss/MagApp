@@ -1,0 +1,157 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+
+<p>
+
+    <button class="btn btn-success" data-bind="visible:shouldShowButton,click:creatNewCarrello" data-target="#newCarrello" data-toggle="modal"><i class="fa fa-plus"></i> Nuovo Carrello</button>
+
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>Matricola</th>
+            <th>Anno Arrivo</th>
+            <th>Area Stock</th>
+            <th>Locazione</th>
+            <th>Actions</th>
+        </tr>
+
+    </thead>
+    <tbody data-bind="foreach:carrelli">
+        <tr>
+            <td>
+                <span data-bind="text:$data.matricola"></span>
+            </td>
+            <td>
+                <span data-bind="text:$data.annoArrivo"></span>
+            </td>
+            <td>
+                <span data-bind="text:$data.areaStock"></span>
+            </td>
+            <td>
+                <span data-bind="text:$data.locazione"></span>
+            </td>
+            <td>
+                <button class="btn btn-default" data-bind="click:$parent.show, visible:$parent.shouldShowButton" title="Show"><i class="fa fa-eye"></i></button>
+                <button class="btn btn-primary" data-bind="click:$parent.loadExistingCarrello,visible:$parent.shouldShowButton" data-target="#existingCarrello" data-toggle="modal" title="Modifica"><i class="fa fa-pencil"></i> </button>
+                <button class="btn btn-danger" data-bind="click:$parent.remove, visible:$parent.shouldShowButton" title="Cancella"><i class="fa fa-trash"></i> </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!--<partial name="~/Views/Carrelli/_addModalPartial.cshtml" />-->
+<div class="modal" id="newCarrello" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong class="text-success">Nuovo Carrello</strong>
+                </div>
+            </div>
+            <div class="modal-body" data-bind="with:newcarrello">
+                <div>
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Matricola" type="text" name="matricola" data-bind="value:matricola" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().matricolaErrors"></span>
+
+                    </div>
+
+
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Anno Arrivo es. 2019" type="number" name="annoArrivo" data-bind="value:annoArrivo" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().annoArrivoErrors"></span>
+                    </div>
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Area Stock" type="text" name="areaStock" data-bind="value:areaStock" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().areaStockErrors"></span>
+
+                    </div>
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Locazione" name="locazione" data-bind="value:locazione" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().locazioneErrors"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Chiude</button>
+                <button class="btn btn-success" data-bind="click:save">Salva</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!--<partial name="~/Views/Carrelli/_editModalPartial.cshtml" />-->
+<div class="modal" id="existingCarrello" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong class="text-primary">Aggiornamento Carrello</strong>
+                </div>
+            </div>
+            <div class="modal-body" data-bind="with:newcarrello">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        Matricola
+                    </div>
+                    <div class="col-sm-9">
+                        
+                        <input type="text" name="matricola" data-bind="value:matricola" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().matricolaErrors"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">Anno Arrivo</div>
+                    <div class="col-md-9">
+                        <input type="number" name="annoArrivo" data-bind="value:annoArrivo" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().annoArrivoErrors"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3">Area Stock</div>
+                    <div class="col-sm-9">
+                        <input type="text" name="areaStock" data-bind="value:areaStock" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().areaStockErrors"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3">Locazione</div>
+                    <div class="col-sm-9">
+                        <input name="locazione" data-bind="value:locazione" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().locazioneErrors"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiude</button>
+                <button class="btn btn-primary" data-bind="click:update">Aggiorna</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/App/ViewModels/carrelloViewModel.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/knockout-3.4.2.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var model = new carrelloViewModel();
+        model.init();
+        ko.applyBindings(model);
+    });
+</script>

@@ -7,23 +7,39 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
-    [Authorize(Users ="Admin")]
+    //[Authorize(Users ="Admin")]
+    [EnableCors(origins: "http://localhost:50312", headers: "*", methods: "*")]
     public class ComponentiController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: api/Componenti
-        [AllowAnonymous]
+        // [AllowAnonymous]
+        /*
         public IQueryable<Componente> GetTblComponenti()
         {
             return db.TblComponenti;
         }
-
+        */
+        public IHttpActionResult GetTblComponenti()
+        {
+            var result = db.TblComponenti.Select(t => new
+            {
+                t.Codice,
+                t.Descrizione,
+                t.Note,
+                t.ComponenteID,
+                t.CarrelloID
+            });
+            return Ok(result.ToList());
+        }
+        
         // GET: api/Componenti/5
         [ResponseType(typeof(Componente))]
         public IHttpActionResult GetComponente(int id)

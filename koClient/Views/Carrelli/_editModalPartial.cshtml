@@ -1,0 +1,58 @@
+﻿<div class="modal" id="existingCarrello" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong>Nuovo Carrello</strong>
+                </div>
+            </div>
+            <div class="modal-body" data-bind="with:newcarrello">
+                <table cellpadding="10" width="100%">
+
+                    <tr>
+                        <td>
+                            <strong>Matricola</strong>
+                        </td>
+                        <td>
+                            <input type="text" name="matricola" data-bind="value:matricola" class="form-control" required />
+                            <span class="validation-summary-errors" data-bind="text:$parent.modelState().matricolaErrors"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Anno Arrivo</strong>
+                        </td>
+                        <td>
+                            <input type="number" name="annoArrivo" data-bind="value:annoArrivo" class="form-control" required />
+                            <span class="validation-summary-errors" data-bind="text:$parent.modelState().annoArrivoErrors"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Anno Stock</strong>
+                        </td>
+                        <td>
+                            <input type="text" name="areaStock" data-bind="value:areaStock" class="form-control" required />
+                            <span class="validation-summary-errors" data-bind="text:$parent.modelState().areaStockErrors"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Locazione</strong>
+                        </td>
+                        <td>
+                            <input type="text" name="locazione" data-bind="value:locazione" class="form-control" required />
+                            <span class="validation-summary-errors" data-bind="text:$parent.modelState().locazioneErrors"></span>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button class="btn btn-primary" data-bind="click:update">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

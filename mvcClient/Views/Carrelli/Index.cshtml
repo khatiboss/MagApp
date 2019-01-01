@@ -1,0 +1,98 @@
+﻿@model IEnumerable<mvcClient.Models.CarrelloModel>
+
+@{
+    ViewBag.Title = "Elenco Carrelli";
+}
+
+<br />
+
+<p>
+    <a href="@Url.Action("AddOrEdit","Carrelli")" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Carrello</a>
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Matricola)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnnoArrivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaStock)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Locazione)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Matricola)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnnoArrivo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaStock)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Locazione)
+            </td>
+            <td>
+                <a href="@Url.Action("Show","Carrelli",new { id=item.CarrelloID})" class="btn btn-default" title="Detagli"><i class="fa fa-eye"></i></a>
+                <a href="@Url.Action("AddOrEdit", "Carrelli", new { id = item.CarrelloID})" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
+
+                <a onclick="Cancella(@item.CarrelloID)" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@section scripts{
+    <script>
+       
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            console.log(successMessage);
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+
+        function Delete(id) {
+            alertify.confirm('Web Api CRUD Operations','Are You Sure to Delete this Record ?',function(){
+                window.location.href  = '@Url.Action("Delete","Carrelli")/'+id;
+            },null );
+        }
+
+
+        function Cancella(carrelloId) {
+            swal({
+                title: "Sei sicuro di cancellare questo Carrello con tutti componenti ?",
+                text: "Non puoi ripristinare più questo Record!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location.href = '@Url.Action("Delete","Carrelli")/' + carrelloId;
+                        swal("Cancellazione fatta con successo!", {
+                            icon: "success",
+                        });
+                    } else {
+                       // swal("Your imaginary file is safe!");
+                    }
+                });
+
+        }
+
+    </script>
+}

@@ -1,6 +1,8 @@
-﻿var carrello = function (parentViewModel) {
+﻿var webApiServerUrl = "http://localhost:60948";
+
+var carrello = function (parentViewModel) {
     var self = this;
-    self.id = ko.observable();
+    self.carrelloId = ko.observable();
     self.matricola = ko.observable();
     self.annoArrivo = ko.observable();
     self.areaStock = ko.observable();
@@ -52,7 +54,7 @@ var errorKeys = function (mErr, aaErr,asErr,lErr) {
 function carrelloViewModel() {
     var self = this;
 
-    self.shouldShowButton = ko.observable(false);
+    self.shouldShowButton = ko.observable(true);
 
     self.newcarrello = ko.observable(new carrello(self));
 
@@ -66,7 +68,7 @@ function carrelloViewModel() {
         if (self.newcarrello().matricola() != undefined || self.newcarrello().annoArrivo() != undefined || self.newcarrello().areaStock() != undefined || self.newcarrello().locazione() != undefined) {
             $.ajax({
                 type: "post",
-                url: "/api/carrelli",
+                url: webApiServerUrl+"/api/carrelli",
                 data: ko.toJSON(self.newcarrello),
                 //error:function(error){
                 //    alert(error.responseText);
@@ -85,7 +87,7 @@ function carrelloViewModel() {
                     }
                 },
                 success: function (data) {
-                    $("#newcarrello").modal("hide");
+                    $("#newCarrello").modal("hide");
                     self.carrelli.push(data);
                     self.newcarrello(new carrello(self));
                 },
@@ -110,7 +112,7 @@ function carrelloViewModel() {
     self.update = function () {
         $.ajax({
             type: "put",
-            url: "/api/carrelli/" + self.newcarrello().id,
+            url: webApiServerUrl+"/api/carrelli/" + self.newcarrello().carrelloID,
             data: ko.toJSON(self.newcarrello),
             error: function (jgxhr, status, error) {
                 alert(error);
@@ -138,24 +140,40 @@ function carrelloViewModel() {
     };
     //delete carrello from database using carrello id
     self.remove = function (carrelloToRemove) {
-        var result = confirm("are you sure you want delete!");
-        if (result) {
-            $.ajax({
-                //api/carrelli/5
-                url: "/api/carrelli/" + carrelloToRemove.id,
-                success: function () {
-                    self.carrelli.remove(carrelloToRemove);
-                },
-                contenttype: "application/json",
-                type: "Delete"
+        console.log(carrelloToRemove);
+        swal({
+            title: "Sei sicuro di cancellare questo Carrello con tutti componenti ?",
+            text: "Non puoi ripristinare più questo Record!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        //api/carrelli/5
+                        url: webApiServerUrl + "/api/carrelli/" + carrelloToRemove.carrelloID,
+                        success: function () {
+                            self.carrelli.remove(carrelloToRemove);
+                        },
+                        contenttype: "application/json",
+                        type: "Delete"
+                    });
+                    swal("Cancellazione fatta con successo!", {
+                        icon: "success",
+                    });
+                } else {
+                    // swal("Your imaginary file is safe!");
+                }
             });
-        }
+
+        
     };
 
     self.init = function () {
-        $.getJSON("/api/carrelli", self.carrelli);
+        $.getJSON(webApiServerUrl+"/api/carrelli", self.carrelli);
 
        // $.getJSON("/Account/CheckVisibility", self.shouldShowButton);
     }
-
+   
 }

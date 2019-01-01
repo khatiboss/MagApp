@@ -1,0 +1,92 @@
+﻿@model IEnumerable<mvcClient.Models.ComponenteModel>
+
+@{
+    ViewBag.Title = "Elenco Componenti";
+}
+
+<br />
+
+<p>
+    <a href="@Url.Action("AddOrEdit","Componenti")" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Componente</a>
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Codice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descrizione)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Codice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descrizione)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Note)
+            </td>
+            <td>
+                <a href="@Url.Action("Show","Componenti",new { id=item.ComponenteID})" class="btn btn-default" title="Detagli"><i class="fa fa-eye"></i></a>
+                <a href="@Url.Action("AddOrEdit", "Componenti", new { id = item.ComponenteID})" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
+
+                <a onclick="Cancella(@item.ComponenteID)" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@section scripts{
+    <script>
+
+        $(function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+            console.log(successMessage);
+            if (successMessage != '')
+                alertify.success(successMessage);
+        });
+    //Not used
+        function Delete(id) {
+            alertify.confirm('Web Api CRUD Operations','Are You Sure to Delete this Record ?',function(){
+                window.location.href  = '@Url.Action("Delete","Componenti")/'+id;
+            },null );
+        }
+
+
+        function Cancella(ComponenteId) {
+            swal({
+                title: "Sei sicuro?",
+                text: "Non puoi ripristinare più questo Componente!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location.href = '@Url.Action("Delete","Componenti")/' + ComponenteId;
+                        swal("Cancellazione fatta con successo!", {
+                            icon: "success",
+                        });
+                    } else {
+                       // swal("Your imaginary file is safe!");
+                    }
+                });
+
+        }
+
+    </script>
+}
