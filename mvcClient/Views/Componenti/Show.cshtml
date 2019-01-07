@@ -1,57 +1,27 @@
-﻿@model mvcClient.Models.CarrelloModel
-
+﻿
 @{
     /**/
 
-    ViewBag.Title = "Componenti Carrelo";
+    ViewBag.Title = "Detagli Componente";
 }
 
-<h2>Componenti Carrelo</h2>
+<h2>Detagli Componente</h2>
 
 
 <br />
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4 class="panel-title"><b>CARRELLO:</b> @Model.CarrelloID / @Model.AnnoArrivo</h4>
-        <h4><b>Matricola:</b> @Model.Matricola</h4>
-        <h4><b>Posizione:</b> @Model.AreaStock - @Model.Locazione</h4>
+        <h4 class="panel-title"><b>Componente:</b> @ViewBag.data.codice</h4>
+        
     </div>
     <div class="panel-body">
-        <p>
-            <a href="@Url.Action("AddOrEdit","Componenti")" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Componente</a>
-        </p>
-        <table class="table table-striped">
-            <thead class="table-heading">
-                <tr>
-                    <th>
-                        @Html.DisplayName("Codice")
-                    </th>
-                    <th>
-                        @Html.DisplayName("Descrizione")
-                    </th>
-                    <th>
-                        @Html.DisplayName("Note")
-                    </th>
-
-                    <th>
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-
-                    <td>
-
-                        <a href="@Url.Action("AddOrEdit", "Componenti", new {/* id = item.CarrelloID*/})" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
-
-                        <a onclick="Cancella()" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
+        <p><b>Codice : </b> @ViewBag.data.descrizione</p>
+        <p><b>Note : </b> @ViewBag.data.note</p>
+           <h3>Carrello d'appertinenza</h3>
+        <p><b>Matricola : @ViewBag.data.matricola</b> </p>
+        <p><b>Posizione : [@ViewBag.data.areaStock] - [@ViewBag.data.locazione]</b></p>
+   
     </div>
 </div>
 

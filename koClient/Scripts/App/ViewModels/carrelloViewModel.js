@@ -12,7 +12,7 @@ var carrello = function (parentViewModel) {
         if (newValue != "") {
             parentViewModel.modelState().matricolaErrors([]);
         } else {
-            parentViewModel.modelState().matricolaErrors(["Matricola field is requried"]);
+            parentViewModel.modelState().matricolaErrors(["Campo obligatorio"]);
         }
     });
 
@@ -20,7 +20,7 @@ var carrello = function (parentViewModel) {
         if (newValue != "") {
             parentViewModel.modelState().annoArrivoErrors([]);
         } else {
-            parentViewModel.modelState().annoArrivoErrors(["AnnoArrivo field is requried"]);
+            parentViewModel.modelState().annoArrivoErrors(["Campo obligatorio"]);
         }
     });
 
@@ -28,7 +28,7 @@ var carrello = function (parentViewModel) {
         if (newValue != "") {
             parentViewModel.modelState().areaStockErrors([]);
         } else {
-            parentViewModel.modelState().areaStockErrors(["AreaStock field is requried"]);
+            parentViewModel.modelState().areaStockErrors(["Campo obligatorio"]);
         }
     });
 
@@ -36,13 +36,13 @@ var carrello = function (parentViewModel) {
         if (newValue != "") {
             parentViewModel.modelState().locazioneErrors([]);
         } else {
-            parentViewModel.modelState().locazioneErrors(["Locazione field is requried"]);
+            parentViewModel.modelState().locazioneErrors(["Campo obligatorio"]);
         }
     });
     return self;
 };
 
-var errorKeys = function (mErr, aaErr,asErr,lErr) {
+var errorKeys = function (mErr, aaErr, asErr, lErr) {
     var self = this;
     self.matricolaErrors = ko.observableArray(mErr);
     self.annoArrivoErrors = ko.observableArray(aaErr);
@@ -59,6 +59,7 @@ function carrelloViewModel() {
     self.newcarrello = ko.observable(new carrello(self));
 
 
+
     //Get tutti carrelli
     self.carrelli = ko.observableArray();
 
@@ -68,7 +69,7 @@ function carrelloViewModel() {
         if (self.newcarrello().matricola() != undefined || self.newcarrello().annoArrivo() != undefined || self.newcarrello().areaStock() != undefined || self.newcarrello().locazione() != undefined) {
             $.ajax({
                 type: "post",
-                url: webApiServerUrl+"/api/carrelli",
+                url: webApiServerUrl + "/api/carrelli",
                 data: ko.toJSON(self.newcarrello),
                 //error:function(error){
                 //    alert(error.responseText);
@@ -94,12 +95,11 @@ function carrelloViewModel() {
                 contentType: "Application/json"
             });
         } else {
-            //alert("Name and Definition are required!");
-            //name : carrello1
-            //definition:undefined
-            self.modelState(new errorKeys(["Matricola field is required"], ["AnnoArrivo field is required"], ["AreaStock field is required"], ["Locazione field is required"]));
+
+            self.modelState(new errorKeys(["Campo Matricola obligatorio"], ["Campo AnnoArrivo obligatorio"], ["Campo AreaStock obligatorio"], ["Campo Locazione obligatorio"]));
         }
     };
+
     //Update Existing carrello
     self.loadExistingCarrello = function (carrelloToUpdate) {
         self.newcarrello(carrelloToUpdate);
@@ -112,23 +112,13 @@ function carrelloViewModel() {
     self.update = function () {
         $.ajax({
             type: "put",
-            url: webApiServerUrl+"/api/carrelli/" + self.newcarrello().carrelloID,
+            url: webApiServerUrl + "/api/carrelli/" + self.newcarrello().carrelloID,
             data: ko.toJSON(self.newcarrello),
             error: function (jgxhr, status, error) {
                 alert(error);
             },
             success: function (data) {
                 $("#existingCarrello").modal("hide");
-
-                //update carrellos array
-                //var oldcarrello = $.grep(self.carrellos, function (t) { return t.id == self.newcarrello().id; })
-
-                //self.carrelli.replace(oldcarrello, self.newcarrello());
-
-                //Refresh carrelli array.
-
-                //$.getJSON("/api/carrelli", self.carrellos);
-
                 var tuttiCarrelli = self.carrelli();
                 self.carrelli([]);
                 self.carrelli(tuttiCarrelli);
@@ -138,12 +128,14 @@ function carrelloViewModel() {
             contentType: "Application/json"
         });
     };
+
+
     //delete carrello from database using carrello id
     self.remove = function (carrelloToRemove) {
         console.log(carrelloToRemove);
         swal({
-            title: "Sei sicuro di cancellare questo Carrello con tutti componenti ?",
-            text: "Non puoi ripristinare più questo Record!",
+            title: "Sei sicuro di voler cancellare ?",
+            text: "Non puoi ripristinare queste informazioni!",
             icon: "warning",
             buttons: true,
             dangerMode: true,
@@ -161,19 +153,31 @@ function carrelloViewModel() {
                     });
                     swal("Cancellazione fatta con successo!", {
                         icon: "success",
+
                     });
+
                 } else {
                     // swal("Your imaginary file is safe!");
                 }
             });
 
-        
+
     };
 
     self.init = function () {
-        $.getJSON(webApiServerUrl+"/api/carrelli", self.carrelli);
+        $.getJSON(webApiServerUrl + "/api/carrelli", self.carrelli);
 
-       // $.getJSON("/Account/CheckVisibility", self.shouldShowButton);
+
     }
-   
+
+    self.infos = ko.observableArray();
+    self.show = function (carrello) {
+        console.log(carrello);
+        $.getJSON(webApiServerUrl + "/api/carrelli/" + carrello.carrelloID, function (data) {
+            console.log(carrello);
+            self.infos(data);
+        });
+    };
+
+  
 }

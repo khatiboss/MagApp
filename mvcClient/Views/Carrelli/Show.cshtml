@@ -1,5 +1,6 @@
 ﻿@model mvcClient.Models.CarrelloModel
 
+
 @{
     /**/
 
@@ -19,44 +20,86 @@
     </div>
     <div class="panel-body">
         <p>
-            <a href="@Url.Action("AddOrEdit","Componenti")" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Componente</a>
+            <a href="@Url.Action("AddOrEdit","Componenti")?carrelloId=@Model.CarrelloID" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Componente</a>
         </p>
-        <table class="table table-striped">
-            <thead class="table-heading">
-                <tr>
-                    <th>
-                        @Html.DisplayName("Codice")
-                    </th>
-                    <th>
-                        @Html.DisplayName("Descrizione")
-                    </th>
-                    <th>
-                        @Html.DisplayName("Note")
-                    </th>
+        @if (Model.Componenti.Count > 0)
+        {
+            <table class="table table-striped">
+                <thead class="table-heading">
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Codice")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Descrizione")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Note")
+                        </th>
 
-                    <th>
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-                    <td>
 
-                        <a href="@Url.Action("AddOrEdit", "Componenti", new {/* id = item.CarrelloID*/})" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
+                    @foreach (var componente in Model.Componenti)
+                    {
+                        <tr>
+                            <td>@componente.Codice</td>
+                            <td>@componente.Descrizione</td>
+                            <td>@componente.Note</td>
+                            <td>
+                                <a href="@Url.Action("Show", "Componenti", new { id = componente.ComponenteID })" class="btn btn-default" title="Detagli"><i class="fa fa-eye"></i></a>
+                                <a href="@Url.Action("AddOrEdit", "Componenti", new { id = componente.ComponenteID })" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
 
-                        <a onclick="Cancella()" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
-                    </td>
-                </tr>
-            </tbody>
+                                <a onclick="CancellaComponente(@componente.ComponenteID)" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    }
 
-        </table>
+                </tbody>
+
+
+            </table>
+        }
+        else
+        {<span class="text-warning bg-info">NON ci sono componenti per questo carrello</span>}
     </div>
 </div>
 
+<div>
+    <a href="@Url.Action("Index","Carrelli")" class="btn btn-info" title="Elenco Carrelli"><i class="fa fa-arrow-left"></i> Elenco Carrelli</a>
 
+</div>
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval");
+    <script>
+
+        function CancellaComponente(componenteId) {
+            console.log('cancella componente id :' + componenteId);
+            swal({
+                title: "Sei sicuro di voler cancellare?",
+                text: "Non puoi ripristinare più questi informazioni ?!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        window.location.href = '@Url.Action("Delete","Componenti")/' + componenteId;
+                        swal("Cancellazione fatta con successo!", {
+                            icon: "success",
+                        });
+                    } else {
+                        // swal("Your imaginary file is safe!");
+                    }
+                });
+        }
+
+
+    </script>
 }

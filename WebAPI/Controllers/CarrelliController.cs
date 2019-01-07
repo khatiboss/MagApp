@@ -21,7 +21,9 @@ namespace WebAPI.Controllers
 
         // GET: api/Carrelli
 
-       // [AllowAnonymous]
+        // [AllowAnonymous]
+
+
         public IHttpActionResult GetTblCarrelli()
         {
             var result = db.TblCarrelli.Select(t => new
@@ -34,6 +36,8 @@ namespace WebAPI.Controllers
             });
             return Ok(result.ToList());
         }
+
+
         /*
 
         public IQueryable<Carrello> GetEmployees()
@@ -41,17 +45,38 @@ namespace WebAPI.Controllers
             return db.TblCarrelli;
         }
 
+
         */
+
+
+
+
         // GET: api/Carrelli/5
         [ResponseType(typeof(Carrello))]
         public IHttpActionResult GetCarrello(int id)
         {
-           
-           Carrello carrello = db.TblCarrelli.Find(id);
 
-            
-      
-              
+
+            var carrello = db.TblCarrelli.Where(cr => cr.CarrelloID == id).Select(cr => new
+            {
+                cr.CarrelloID,
+                cr.AnnoArrivo,
+                cr.AreaStock,
+                cr.Locazione,
+                cr.Matricola,
+                Componenti = cr.Componenti.Select(cm => new
+                {
+                    cm.ComponenteID,
+                    cm.Codice,
+                    cm.Descrizione,
+                    cm.Note,
+                    cm.CarrelloID
+
+                }),
+
+            }).FirstOrDefault();
+
+
 
             if (carrello == null)
             {

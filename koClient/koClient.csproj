@@ -163,6 +163,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\alertify.js" />
     <Content Include="Scripts\alertify.min.js" />
+    <Content Include="Scripts\App\ViewModels\componenteViewModel - Copy.js" />
     <Content Include="Scripts\App\ViewModels\componenteViewModel.js" />
     <Content Include="Scripts\App\ViewModels\carrelloViewModel.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -204,6 +205,7 @@
     <Content Include="Views\Componenti\Index.cshtml" />
     <Content Include="Views\Carrelli\_addModalPartial.cshtml" />
     <Content Include="Views\Carrelli\_editModalPartial.cshtml" />
+    <Content Include="Views\Componenti\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

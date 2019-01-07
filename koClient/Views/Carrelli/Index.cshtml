@@ -37,13 +37,95 @@
                 <span data-bind="text:$data.locazione"></span>
             </td>
             <td>
-                <button class="btn btn-default" data-bind="click:$parent.show, visible:$parent.shouldShowButton" title="Show"><i class="fa fa-eye"></i></button>
-                <button class="btn btn-primary" data-bind="click:$parent.loadExistingCarrello,visible:$parent.shouldShowButton" data-target="#existingCarrello" data-toggle="modal" title="Modifica"><i class="fa fa-pencil"></i> </button>
-                <button class="btn btn-danger" data-bind="click:$parent.remove, visible:$parent.shouldShowButton" title="Cancella"><i class="fa fa-trash"></i> </button>
+                <button class="btn btn-default" data-bind="click:$parent.show" data-target="#showCarrello" data-toggle="modal" title="Visualizza"><i class="fa fa-eye"></i></button>
+                <button class="btn btn-primary" data-bind="click:$parent.loadExistingCarrello" data-target="#existingCarrello" data-toggle="modal" title="Modifica"><i class="fa fa-pencil"></i> </button>
+                <button class="btn btn-danger" data-bind="click:$parent.remove" title="Cancella"><i class="fa fa-trash"></i> </button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<!--showCarrello-->
+<div class="modal" id="showCarrello" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong class="text-success">Dettagli Carrello</strong>
+                </div>
+            </div>
+            <div class="modal-body">
+
+                  <div class="panel panel-default" data-bind="foreach:infos">
+                    <div class="panel-heading">
+                        <h4 class="panel-title"><b>CARRELLO: </b><span data-bind="text:carrelloID"></span>/<span data-bind="text:annoArrivo"></span></h4>
+                        <h4><b>Matricola: </b><span data-bind="text:matricola"></span></h4>
+                        <h4><b>Posizione: </b>[<span data-bind="text:areaStock"></span>] - [<span data-bind="text:locazione"></span> ]</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            <h3><b class="text-success">Componenti Carrelo</b></h3>
+                        </p>
+
+                        <table class="table table-striped" data-bind="if:$data.componenti.length > 0">
+                            <thead class="table-heading">
+                                <tr>
+                                    <th>
+                                        Codice
+                                    </th>
+                                    <th>
+                                        Descrizione
+                                    </th>
+                                    <th>
+                                        Note
+                                    </th>
+
+                                    <!--th>
+                                        Actions
+                                    </th-->
+                                </tr>
+                            </thead>
+                            <tbody data-bind="foreach:$data.componenti">
+
+
+
+
+                                <tr>
+                                    <td><span data-bind="text:codice"></span></td>
+                                    <td><span data-bind="text:descrizione"></span></td>
+                                    <td><span data-bind="text:note"></span></td>
+                                    <!--
+                                                                   <td>
+
+                                    <button class="btn btn-default" data-bind="click:$parent.show" data-target="#showComponente" data-toggle="modal" title="Visualizza"><i class="fa fa-eye"></i></button>
+                                    <button class="btn btn-primary" data-bind="click:$parent.loadExistingComponente" data-target="#existingComponente" data-toggle="modal" title="Modifica"><i class="fa fa-pencil"></i> </button>
+
+                                    <button class="btn btn-danger" data-bind="click:$parent.remove" title="Cancella"><i class="fa fa-trash"></i> </button>
+                                                                </td>
+                                                                       -->
+
+                                </tr>
+
+
+                            </tbody>
+
+
+                        </table>
+
+                        <span class="text-warning bg-info" data-bind="if:$data.componenti.length === 0">NON ci sono componenti per questo carrello</span>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Chiude</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!--<partial name="~/Views/Carrelli/_addModalPartial.cshtml" />-->
 <div class="modal" id="newCarrello" role="dialog">
@@ -106,7 +188,7 @@
                         Matricola
                     </div>
                     <div class="col-sm-9">
-                        
+
                         <input type="text" name="matricola" data-bind="value:matricola" class="form-control" required />
                         <span class="validation-summary-errors" data-bind="text:$parent.modelState().matricolaErrors"></span>
                     </div>
@@ -144,6 +226,7 @@
 </div>
 
 
+
 <script src="~/Scripts/App/ViewModels/carrelloViewModel.js"></script>
 <script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/knockout-3.4.2.js"></script>
@@ -153,5 +236,6 @@
         var model = new carrelloViewModel();
         model.init();
         ko.applyBindings(model);
+
     });
 </script>

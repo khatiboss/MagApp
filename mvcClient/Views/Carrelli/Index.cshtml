@@ -58,7 +58,7 @@
 
 @section scripts{
     <script>
-       
+
         $(function () {
             var successMessage = '@TempData["SuccessMessage"]';
             console.log(successMessage);
@@ -74,9 +74,10 @@
 
 
         function Cancella(carrelloId) {
+            console.log('cancella');
             swal({
-                title: "Sei sicuro di cancellare questo Carrello con tutti componenti ?",
-                text: "Non puoi ripristinare più questo Record!",
+                title: "Sei sicuro di voler cancellare?",
+                text: "Non puoi ripristinare più questi informazioni ?!",
                 icon: "warning",
                 buttons: true,
                 dangerMode: true,
@@ -92,6 +93,8 @@
                     }
                 });
 
+           
+        
         }
 
     </script>

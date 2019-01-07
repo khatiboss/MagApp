@@ -1,0 +1,137 @@
+﻿@{
+
+
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+
+<p>
+
+</p>
+<table class="table table-striped">
+    <thead class="table-heading">
+        <tr>
+            <th>Quantità</th>
+            <th>Codice</th>
+            <th>Carrelli</th>
+        </tr>
+
+    </thead>
+    <tbody data-bind="foreach:infosComponenti">
+        <tr>
+            <td>
+                <span data-bind="text:$data.quantita"></span>
+            </td>
+            <td>
+                <span data-bind="text:$data.codice"></span>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="modal" id="newComponente" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong class="text-success">Nuovo Componente</strong>
+                </div>
+            </div>
+            <div class="modal-body" data-bind="with:newcomponente">
+                <div>
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Codice" type="text" name="codice" data-bind="value:codice" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().codiceErrors"></span>
+
+                    </div>
+
+
+                    <div class="form-group col-md-offset-2">
+                        <input placeholder="Descrizione" type="text" name="descrizione" data-bind="value:descrizione" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().descrizioneErrors"></span>
+                    </div>
+                    <div class="form-group col-md-offset-2">
+                        <textarea rows="5" placeholder="Note" data-bind="value:note" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().noteErrors"></span>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default " data-dismiss="modal">Chiude</button>
+                <button class="btn btn-success" data-bind="click:save">Salva</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal" id="existingComponente" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <div class="modal-title">
+                    <strong class="text-primary">Aggiornamento Componente</strong>
+                </div>
+            </div>
+            <div class="modal-body" data-bind="with:newcomponente">
+                <div class="form-group row">
+                    <div class="col-sm-3">
+                        Codice
+                    </div>
+                    <div class="col-sm-9">
+                        <input placeholder="Codice" type="text" name="codice" data-bind="value:codice" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().codiceErrors"></span>
+
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">Descrizione</div>
+                    <div class="col-md-9">
+                        <input placeholder="Descrizione" type="text" name="descrizione" data-bind="value:descrizione" class="form-control" required />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().descrizioneErrors"></span>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3">Note</div>
+                    <div class="col-sm-9">
+                        <textarea rows="5" placeholder="Note" data-bind="value:note" class="form-control" />
+                        <span class="validation-summary-errors" data-bind="text:$parent.modelState().noteErrors"></span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Chiude</button>
+                <button class="btn btn-primary" data-bind="click:update">Aggiorna</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/knockout-3.4.2.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/App/ViewModels/componenteViewModel.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        var model = new componenteViewModel();
+        model.init();
+        ko.applyBindings(model);
+
+    });
+</script>
+
+

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<mvcClient.Models.ComponenteModel>
+﻿
 
 @{
     ViewBag.Title = "Elenco Componenti";
@@ -6,87 +6,45 @@
 
 <br />
 
-<p>
-    <a href="@Url.Action("AddOrEdit","Componenti")" class="btn btn-success"><i class="fa fa-plus"></i> Nuovo Componente</a>
-</p>
 <table class="table table-striped">
     <thead class="table-heading">
+
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Codice)
+                Quantità
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Descrizione)
+                Codice
             </th>
+         
             <th>
-                @Html.DisplayNameFor(model => model.Note)
+                Carrelli
             </th>
-            <th>
-                Actions
-            </th>
+          
         </tr>
     </thead>
-    @foreach (var item in Model)
+    @foreach (var componente in ViewBag.ListaComponenti)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Codice)
+                @componente.quantita
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Descrizione)
+                @componente.codice
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                <a href="@Url.Action("Show","Componenti",new { id=item.ComponenteID})" class="btn btn-default" title="Detagli"><i class="fa fa-eye"></i></a>
-                <a href="@Url.Action("AddOrEdit", "Componenti", new { id = item.ComponenteID})" class="btn btn-primary" title="Modifica"><i class="fa fa-pencil"></i></a>
 
-                <a onclick="Cancella(@item.ComponenteID)" class="btn btn-danger" title="Cancella"><i class="fa fa-trash"></i></a>
+                @foreach (var carrello in componente.carrelli)
+                {
+                    <ul>
+                        <li> <a href="@Url.Action("Show","Carrelli",new { id=carrello.carrelloID})"  title="Detagli">@carrello.matricola</a><br /></li>
+
+                    </ul>
+                }
+
             </td>
+         
         </tr>
     }
 
 </table>
-
-
-@section scripts{
-    <script>
-
-        $(function () {
-            var successMessage = '@TempData["SuccessMessage"]';
-            console.log(successMessage);
-            if (successMessage != '')
-                alertify.success(successMessage);
-        });
-    //Not used
-        function Delete(id) {
-            alertify.confirm('Web Api CRUD Operations','Are You Sure to Delete this Record ?',function(){
-                window.location.href  = '@Url.Action("Delete","Componenti")/'+id;
-            },null );
-        }
-
-
-        function Cancella(ComponenteId) {
-            swal({
-                title: "Sei sicuro?",
-                text: "Non puoi ripristinare più questo Componente!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        window.location.href = '@Url.Action("Delete","Componenti")/' + ComponenteId;
-                        swal("Cancellazione fatta con successo!", {
-                            icon: "success",
-                        });
-                    } else {
-                       // swal("Your imaginary file is safe!");
-                    }
-                });
-
-        }
-
-    </script>
-}

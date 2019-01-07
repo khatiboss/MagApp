@@ -1,40 +1,47 @@
-﻿@model  mvcClient.Models.CarrelloModel
+﻿@model mvcClient.Models.ComponenteModel
+
 @{
-    ViewBag.Title = "Creaziono O Aggiornamento Carrello";
+    ViewBag.Title = "AddOEdit Componente";
 }
+
 
 <div class="form-body">
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.CarrelloID)
+        @Html.HiddenFor(model => model.ComponenteID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Matricola)
-            @Html.EditorFor(model => model.Matricola)
-            @Html.ValidationMessageFor(model => model.Matricola)
+            @Html.LabelFor(model => model.Codice)
+            @Html.EditorFor(model => model.Codice)
+            @Html.ValidationMessageFor(model => model.Codice)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Descrizione)
+            @Html.EditorFor(model => model.Descrizione)
+            @Html.ValidationMessageFor(model => model.Descrizione)
         </div>
 
-        <div class="form-group">
-            @Html.Label("Anno Arrivo")
-            @Html.EditorFor(model => model.AnnoArrivo)
-            @Html.ValidationMessageFor(model => model.AnnoArrivo)
-        </div>
-        <div class="form-group">
-            @Html.Label("Area Stock")
-            @Html.EditorFor(model => model.AreaStock)
-            @Html.ValidationMessageFor(model => model.AreaStock)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Locazione)
-            @Html.EditorFor(model => model.Locazione)
-            @Html.ValidationMessageFor(model => model.Locazione)
-        </div>
 
+        <div class="form-group">
+            @Html.LabelFor(model => model.Note)
+            @Html.TextAreaFor(model => model.Note)
+            @Html.ValidationMessageFor(model => model.Note)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CarrelloID)
+            @Html.EditorFor(model => model.CarrelloID)
+            @Html.ValidationMessageFor(model => model.CarrelloID
+       )
+
+        </div>
         <div class="form-group">
             <input type="submit" value="Submit" class="btn button" />
             <input type="reset" value="Reset" class="btn button" />
         </div>
     }
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 

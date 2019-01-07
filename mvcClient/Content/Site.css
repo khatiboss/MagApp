@@ -9,12 +9,7 @@
     padding-right: 15px;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 340px;
-}
+
 
 /* styles for validation helpers */
 .field-validation-error {
@@ -72,9 +67,10 @@ input, textarea {
 .form-body {
     background: rgba(19, 35, 47, 0.9);
     padding: 20px 40px;
-    max-width: 600px;
+    max-width: 700px;
     margin: 30px auto;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    
 }
 
 body {

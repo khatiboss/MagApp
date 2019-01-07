@@ -11,11 +11,11 @@ namespace mvcClient.Models
 
         public int ComponenteID { get; set; }
 
-        [Required]
-        [StringLength(10)]
+        [Required(ErrorMessage = "Campo Codice è obbligatorio")]
+        [StringLength(10,ErrorMessage = "Lunghezza Massima 10 caratteri")]
         public string Codice { get; set; }
 
-        [Required, MinLength(5), MaxLength(70)]
+        [Required(ErrorMessage = "La Descrizione è obbligatorio"), MinLength(5,ErrorMessage ="Min 5 Char")]
         public string Descrizione { get; set; }
 
         public string Note { get; set; }

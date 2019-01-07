@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,32 +20,71 @@ namespace WebAPI.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: api/Componenti
-        // [AllowAnonymous]
-        /*
-        public IQueryable<Componente> GetTblComponenti()
-        {
-            return db.TblComponenti;
-        }
-        */
+
         public IHttpActionResult GetTblComponenti()
         {
+            /*
             var result = db.TblComponenti.Select(t => new
             {
+                t.ComponenteID,
+                t.CarrelloID,
                 t.Codice,
                 t.Descrizione,
                 t.Note,
-                t.ComponenteID,
-                t.CarrelloID
+                Matricola=t.Carrello.Matricola,
+                AnnoArrivo=t.Carrello.AnnoArrivo,
+                AreaStock=t.Carrello.AreaStock,
+                Locazione=t.Carrello.Locazione,
+
             });
+            */
+
+            var result =
+            from cm in db.TblComponenti
+            group cm by cm.Codice into cd
+            select new
+            {
+                Codice = cd.Key,
+                Quantita = cd.Count(),
+                //Descrizione=cd.Select(cm =>cm.Descrizione),
+                Carrelli = cd.Select(cm => new
+                {
+                    cm.Carrello.Matricola,
+                    cm.Carrello.AreaStock,
+                    cm.Carrello.Locazione,
+                    cm.Carrello.AnnoArrivo,
+                    cm.Carrello.CarrelloID
+                }
+
+            )
+            };
+
             return Ok(result.ToList());
         }
-        
+
         // GET: api/Componenti/5
         [ResponseType(typeof(Componente))]
         public IHttpActionResult GetComponente(int id)
         {
-            Componente componente = db.TblComponenti.Find(id);
+            var componente = db.TblComponenti.Where(cm => cm.ComponenteID == id).Select(cm => new
+            {
+                cm.ComponenteID,
+                cm.Codice,
+                cm.Descrizione,
+                cm.Note,
+                cm.CarrelloID,
+
+                Matricola = cm.Carrello.Matricola,
+                AreaStock = cm.Carrello.AreaStock,
+                Locazione = cm.Carrello.Locazione,
+                AnnoArrivo = cm.Carrello.AnnoArrivo,
+
+
+
+
+            }).FirstOrDefault();
+
+
             if (componente == null)
             {
                 return NotFound();
@@ -57,10 +97,7 @@ namespace WebAPI.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutComponente(int id, Componente componente)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+
 
             if (id != componente.ComponenteID)
             {
@@ -79,10 +116,10 @@ namespace WebAPI.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+
+
+
             }
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -92,15 +129,13 @@ namespace WebAPI.Controllers
         [ResponseType(typeof(Componente))]
         public IHttpActionResult PostComponente(Componente componente)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+
 
             db.TblComponenti.Add(componente);
             db.SaveChanges();
-
             return CreatedAtRoute("DefaultApi", new { id = componente.ComponenteID }, componente);
+
+
         }
 
         // DELETE: api/Componenti/5

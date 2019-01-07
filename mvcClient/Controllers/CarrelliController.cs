@@ -16,6 +16,7 @@ namespace mvcClient.Controllers
             IEnumerable<CarrelloModel> ListaCarrelli;
             HttpResponseMessage risposta = GlobalVariables.WebApiClient.GetAsync("Carrelli").Result;
             ListaCarrelli = risposta.Content.ReadAsAsync<IEnumerable<CarrelloModel>>().Result;
+            
             return View(ListaCarrelli);
         }
 
@@ -58,11 +59,9 @@ namespace mvcClient.Controllers
 
             HttpResponseMessage risposta = GlobalVariables.WebApiClient.GetAsync("Carrelli/" + id.ToString()).Result;
             TempData["SuccessMessage"] = risposta;
-            ViewBag.componentiCarrello = risposta.Content.ReadAsAsync<CarrelloModel>().Result.Componenti.ToList();
 
+            return View((risposta.Content.ReadAsAsync<CarrelloModel>().Result));
 
-            return View(risposta.Content.ReadAsAsync<CarrelloModel>().Result);
-            
         }
     }
 }
